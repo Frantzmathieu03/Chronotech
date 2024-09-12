@@ -1,8 +1,9 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const { v4: uuidv4 } = require('uuid');
 
-// Register a new user
+
 const registerUser = async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -13,7 +14,6 @@ const registerUser = async (req, res) => {
     }
 };
 
-// Login a user
 const loginUser = async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });
@@ -26,17 +26,21 @@ const loginUser = async (req, res) => {
             return res.status(400).json({ message: 'Invalid email or password' });
         }
 
-        const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token });
+        req.session.userId = user._id; // Store user ID in session
+        res.json({ message: 'Login successful' });
     } catch (err) {
         res.status(500).json(err);
     }
 };
 
-// Logout a user (if you are managing sessions, this would be handled on the client side)
 const logoutUser = (req, res) => {
-    // Clear the token on the client side
-    res.json({ message: 'Logout successful' });
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).json(err);
+        }
+        res.json({ message: 'Logout successful' });
+    });
 };
 
 module.exports = { registerUser, loginUser, logoutUser };
+
