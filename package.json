@@ -1,1 +1,22 @@
 
+{
+    "name": "client",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+      "cors": "^2.8.5",
+      "dotenv": "^16.4.5",
+      "express": "^4.21.0",
+      "googleapis": "^144.0.0",
+      "mongoose": "^8.6.2",
+      "stripe": "^16.10.0"
+    }
+  }
+  
