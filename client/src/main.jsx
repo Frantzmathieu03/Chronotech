@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './app';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
-import SignUp from './pages/Signup';
+import SignUp from './pages/SignUp';
 import TodoList from './pages/todoList';
 
 // Define the accessible routes, and which components respond to which URL
