@@ -10,15 +10,36 @@ const typeDefs = gql`
   }
 
 
+  type Todo {
+    id: ID!
+    description: String!
+    assignee: String!
+    dueDate: String!
+    priority: String!
+    projectId: ID!
+    createdAt: String!
+    updatedAt: String!
+  }
+
 
   type Query {
     users: [User]
     user(id: ID!): User
+
+    todos: [Todo]
+    todo(id: ID!): Todo
   }
+
 
   type Mutation {
     createUser(firstName: String!, lastName: String!, email: String!, password: String!): User
     deleteUser(id: ID!): String
+    loginUser(email: String!, password: String!): User
+
+    
+    #todos
+    createTodo(description: String!, assignee: String!, dueDate: String!, priority: String!, projectId: ID!): Todo
+    deleteTodo(id: ID!): String
   }
 `;
 
