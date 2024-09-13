@@ -1,38 +1,38 @@
-// import React, { useState } from 'react';
-// import { useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
-    // const [firstName, setFirstName] = useState('');
-    // const [lastName, setLastName] = useState('');
-    // const [email, setEmail] = useState('');
-    // const [password, setPassword] = useState('');
-    // const history = useHistory();
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     try {
-    //         const response = await fetch('/api/auth/register', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ firstName, lastName, email, password }),
-    //         });
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ firstName, lastName, email, password }),
+            });
 
-    //         if (!response.ok) {
-    //             throw new Error('Registration failed');
-    //         }
+            if (!response.ok) {
+                throw new Error('Registration failed');
+            }
 
-    //         history.push('/login');
-    //     } catch (error) {
-    //         console.error('Registration failed:', error);
-    //     }
-    // };
+            navigate('/login');
+        } catch (error) {
+            console.error('Registration failed:', error);
+        }
+    };
 
     return (
         <div>
             <h2>Sign Up</h2>
-            {/* <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <input
                     type="text"
                     placeholder="First Name"
@@ -62,10 +62,9 @@ const SignUp = () => {
                     required
                 />
                 <button type="submit">Sign Up</button>
-            </form> */}
+            </form>
         </div>
     );
 };
 
 export default SignUp;
-
