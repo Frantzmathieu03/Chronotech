@@ -3,7 +3,7 @@ const { getAllTodos, createTodo, deleteTodoById, getTodoById } = require('../con
 
 const resolvers = {
     Query: {
-      users: async () => await getAllUsers(),
+      users: async (_, {}, context) => await getAllUsers(),
       user: async (_, { id }) => await getUserById(id),
 
 

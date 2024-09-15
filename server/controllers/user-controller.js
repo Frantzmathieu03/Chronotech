@@ -1,5 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require("bcryptjs");
+const {createToken} = require("../helpers/jwt");
+
 
 // Fetch all users
 const getAllUsers = async () => {
@@ -19,7 +21,7 @@ const createUser = async (firstName, lastName, email, password) => {
   return await user.save();
 };
 
-// Login
+// Login 
 const loginUser = async(email, password) => {
   const user = await User.findOne({email});
   if (!user) {
@@ -30,7 +32,10 @@ const loginUser = async(email, password) => {
   if (!passwordCompare) {
     throw new Error ("invalid password")
   }
-  return user
+  // create token to return to client
+const token = createToken (user._id, email)
+
+  return {token, id:user._id}
 }
 
 
