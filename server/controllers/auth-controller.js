@@ -1,35 +1,56 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
-const crypto = require('crypto');
+// const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
+const { createToken } = require('../helpers/jwt');
 
 
-const registerUser = async (req, res) => {
+const registerUser = async (firstName,lastName,email,password) => {
     try {
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-        const newUser = await User.create({ ...req.body, hashedPassword });
-        res.json(newUser);
+const user = await User.findOne({ email }); 
+ if (user) {
+    return {massage: "User already exist"}
+ }
+
+
+ const salt = bcrypt.genSaltSync(12);
+ const hashedPassword = bcrypt.hashSync(salt + password, 12);
+        const newUser = new User({ firstName,lastName,email, salt, password:hashedPassword });
+        newUser.save()
+        const token = createToken(newUser._id, newUser.email)
+
+
+       return {id:newUser._id, token}
     } catch (err) {
-        res.status(500).json(err);
+        console.log(err)
+        return {massage: "something went wrong"}
     }
 };
 
-const loginUser = async (req, res) => {
+const loginUser = async (email, password) => {
     try {
-        const user = await User.findOne({ email: req.body.email });
+        const user = await User.findOne({email });
+
+        console.log(user)
         if (!user) {
-            return res.status(400).json({ message: 'Invalid email or password' });
+            return { message: 'Invalid email or password' };
         }
 
-        const validPassword = await bcrypt.compare(req.body.password, user.hashedPassword);
+        const validPassword = bcrypt.compareSync(
+            user.salt + password,
+            user?.password
+          );
+
+console.log(validPassword)
         if (!validPassword) {
-            return res.status(400).json({ message: 'Invalid email or password' });
+            return { message: 'Invalid email or password' };
         }
 
-        req.session.userId = user._id; // Store user ID in session
-        res.json({ message: 'Login successful' });
+        const token = createToken(user._id, user.email)
+       return {id:user._id, token}
     } catch (err) {
-        res.status(500).json(err);
+        console.log(err)
+        return { message: 'something went wrong' };
     }
 };
 
