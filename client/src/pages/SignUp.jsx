@@ -1,5 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useMutation, gql } from '@apollo/client';
+
+const REGISTER_USER = gql`
+mutation RegisterUser($firstName: String!, $lastName: String!, $email: String!, $password: String!) {
+    registerUser(firstName: $firstName, lastName: $lastName, email: $email, password: $password) {
+      id
+      token
+    }
+  }
+`;
+
+
 
 const SignUp = () => {
     const [firstName, setFirstName] = useState('');
@@ -7,23 +19,24 @@ const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-
+    const [registerUser, { data, loading, error }] = useMutation(REGISTER_USER);
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('/api/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ firstName, lastName, email, password }),
-            });
+            // const response = await fetch('/api/auth/register', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({ firstName, lastName, email, password }),
+            // });
+            const response = await registerUser({ variables: { firstName, lastName, email, password  } });
+            console.log(response)
+            // if (!response.ok) {
+            //     throw new Error('Registration failed');
+            // }
 
-            if (!response.ok) {
-                throw new Error('Registration failed');
-            }
-
-            navigate('/login');
+            // navigate('/login');
         } catch (error) {
             console.error('Registration failed:', error);
         }
@@ -32,6 +45,7 @@ const SignUp = () => {
     return (
         <div>
             <h2>Sign Up</h2>
+            {data?.users && data.users.map(user=><>{user.email}</>)}
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
