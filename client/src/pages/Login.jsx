@@ -8,28 +8,23 @@ function LoginPage() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Simple validation
     if (!email || !password) {
       setError('Both fields are required');
       return;
     }
 
-    // Clear the error
     setError('');
-
-    // You can add your login logic here
     console.log('Logging in with:', { email, password });
   };
 
-  // Inline styles
   const containerStyle = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100vh',
+    minHeight: '100vh', // Ensures the container takes up the full viewport height
     backgroundColor: '#f5f5f5',
-    fontFamily: 'Arial, sans-serif',
+    fontFamily: `'Poppins', sans-serif`,
   };
 
   const formStyle = {
@@ -38,7 +33,7 @@ function LoginPage() {
     borderRadius: '8px',
     boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
     width: '100%',
-    maxWidth: '400px', // Adjust width for better fit
+    maxWidth: '400px',
   };
 
   const inputStyle = {
@@ -47,32 +42,37 @@ function LoginPage() {
     margin: '10px 0',
     border: '1px solid #ddd',
     borderRadius: '4px',
+    fontFamily: `'Poppins', sans-serif`,
+    boxSizing: 'border-box',
   };
 
   const buttonStyle = {
     width: '100%',
     padding: '12px',
-    backgroundColor: '#007bff',
+    backgroundColor: 'orange',
     color: '#fff',
     border: 'none',
     borderRadius: '4px',
     cursor: 'pointer',
     fontSize: '16px',
+    fontFamily: `'Poppins', sans-serif`,
+    boxSizing: 'border-box',
   };
 
   const errorStyle = {
     color: 'red',
     marginBottom: '10px',
-    textAlign: 'center', // Center align error message
+    textAlign: 'center',
+    fontFamily: `'Poppins', sans-serif`,
   };
 
   return (
     <div style={containerStyle}>
-      <h1>Login</h1>
+      <h1 style={{ fontSize: '2rem', color: '#333', marginBottom: '1rem' }}>Login</h1>
       {error && <p style={errorStyle}>{error}</p>}
       <form onSubmit={handleSubmit} style={formStyle}>
         <div>
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email" style={{ fontFamily: `'Poppins', sans-serif` }}>Email:</label>
           <input
             type="email"
             id="email"
@@ -83,7 +83,7 @@ function LoginPage() {
           />
         </div>
         <div>
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password" style={{ fontFamily: `'Poppins', sans-serif` }}>Password:</label>
           <input
             type="password"
             id="password"
@@ -93,7 +93,9 @@ function LoginPage() {
             style={inputStyle}
           />
         </div>
-        <button type="submit" style={buttonStyle}>Login</button>
+        <button type="submit" style={buttonStyle}>
+          Login
+        </button>
       </form>
     </div>
   );
