@@ -6,25 +6,17 @@ const Dashboard = () => {
   const [taskDescription, setTaskDescription] = useState("");
   const [assignee, setAssignee] = useState("");
   const [taskDate, setTaskDate] = useState("");
-  const [isDarkMode, setIsDarkMode] = useState(false); // State for dark mode
 
-  // Load tasks from localStorage on initial render
   useEffect(() => {
     const storedTasks = JSON.parse(localStorage.getItem("tasks"));
     if (storedTasks) {
       setTasks(storedTasks);
     }
-    const storedMode = localStorage.getItem("isDarkMode");
-    if (storedMode) {
-      setIsDarkMode(JSON.parse(storedMode));
-    }
   }, []);
 
-  // Save tasks and dark mode setting to localStorage whenever tasks or mode change
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
-    localStorage.setItem("isDarkMode", JSON.stringify(isDarkMode));
-  }, [tasks, isDarkMode]);
+  }, [tasks]);
 
   const handleAddTask = () => {
     const newTask = {
@@ -56,26 +48,20 @@ const Dashboard = () => {
     setTasks(updatedTasks);
   };
 
-  const toggleDarkMode = () => {
-    setIsDarkMode((prevMode) => !prevMode);
-  };
-
-  // Styles for dark and light modes
   const styles = {
     dashboard: {
       display: "flex",
       justifyContent: "space-between",
       padding: "20px",
-      backgroundColor: isDarkMode ? "#1c1c1c" : "#f5f5f5",
+      backgroundColor: "#f5f5f5",
       height: "100vh",
-      fontFamily:
-        "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif",
-      color: isDarkMode ? "#e0e0e0" : "#333",
+      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif",
+      color: "#333",
     },
     taskCreation: {
       width: "45%",
       padding: "20px",
-      backgroundColor: isDarkMode ? "#333" : "white",
+      backgroundColor: "#fff",
       borderRadius: "8px",
       boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
       display: "flex",
@@ -85,35 +71,35 @@ const Dashboard = () => {
     heading: {
       marginBottom: "20px",
       fontSize: "24px",
-      color: isDarkMode ? "#e0e0e0" : "#333",
+      color: "#333",
       fontWeight: "500",
     },
     input: {
       width: "80%",
       padding: "10px",
       marginBottom: "10px",
-      border: isDarkMode ? "1px solid #444" : "1px solid #ddd",
+      border: "1px solid #ddd",
       borderRadius: "4px",
       fontSize: "14px",
-      backgroundColor: isDarkMode ? "#444" : "white",
-      color: isDarkMode ? "#e0e0e0" : "#333",
+      backgroundColor: "#fff",
+      color: "#333",
       fontFamily: "inherit",
     },
     textarea: {
       width: "80%",
       padding: "10px",
       marginBottom: "10px",
-      border: isDarkMode ? "1px solid #444" : "1px solid #ddd",
+      border: "1px solid #ddd",
       borderRadius: "4px",
       fontSize: "14px",
-      backgroundColor: isDarkMode ? "#444" : "white",
-      color: isDarkMode ? "#e0e0e0" : "#333",
+      backgroundColor: "#fff",
+      color: "#333",
       fontFamily: "inherit",
     },
     button: {
       width: "80%",
       padding: "10px",
-      backgroundColor: isDarkMode ? "#6a5acd" : "orange",
+      backgroundColor: "orange",
       color: "white",
       border: "none",
       borderRadius: "4px",
@@ -121,26 +107,16 @@ const Dashboard = () => {
       fontFamily: "inherit",
       cursor: "pointer",
     },
-    toggleButton: {
-      marginTop: "10px",
-      padding: "8px 12px",
-      backgroundColor: isDarkMode ? "#444" : "#ddd",
-      color: isDarkMode ? "#e0e0e0" : "#333",
-      border: "none",
-      borderRadius: "4px",
-      cursor: "pointer",
-      alignSelf: "center",
-    },
     taskList: {
       width: "45%",
       padding: "20px",
-      backgroundColor: isDarkMode ? "#333" : "white",
+      backgroundColor: "#fff",
       borderRadius: "8px",
       boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
     },
     noTasks: {
       fontSize: "14px",
-      color: isDarkMode ? "#888" : "#999",
+      color: "#999",
       fontFamily: "inherit",
     },
     ul: {
@@ -153,7 +129,7 @@ const Dashboard = () => {
       justifyContent: "space-between",
       padding: "10px",
       marginBottom: "10px",
-      border: isDarkMode ? "1px solid #444" : "1px solid #ddd",
+      border: "1px solid #ddd",
       borderRadius: "4px",
     },
     checkbox: {
@@ -166,16 +142,16 @@ const Dashboard = () => {
       margin: "0 0 5px 0",
       fontSize: "18px",
       fontFamily: "inherit",
-      textDecoration: isDarkMode ? "none" : "line-through",
+      textDecoration: "none",
     },
     taskText: {
       margin: "0 0 5px 0",
       fontSize: "14px",
-      color: isDarkMode ? "#e0e0e0" : "#666",
+      color: "#666",
       fontFamily: "inherit",
     },
     deleteButton: {
-      backgroundColor: "#ff6b6b",
+      backgroundColor: "#22179e",
       color: "white",
       border: "none",
       borderRadius: "4px",
@@ -216,9 +192,6 @@ const Dashboard = () => {
         />
         <button onClick={handleAddTask} style={styles.button}>
           Add Task
-        </button>
-        <button onClick={toggleDarkMode} style={styles.toggleButton}>
-          Toggle {isDarkMode ? "Light" : "Dark"} Mode
         </button>
       </div>
 
