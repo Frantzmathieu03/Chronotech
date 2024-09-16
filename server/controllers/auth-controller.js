@@ -7,11 +7,11 @@ const { createToken } = require('../helpers/jwt');
 
 const registerUser = async (firstName,lastName,email,password) => {
     try {
-const user = await User.findOne({ email }); 
- if (user) {
-    return {massage: "User already exist"}
- }
-
+        const user = await User.findOne({ email }); 
+        if (user) {
+            throw new Error("user already exist");
+        }
+        console.log("aosnd" ,email)
 
  const salt = bcrypt.genSaltSync(12);
  const hashedPassword = bcrypt.hashSync(salt + password, 12);
@@ -23,7 +23,7 @@ const user = await User.findOne({ email });
        return {id:newUser._id, token}
     } catch (err) {
         console.log(err)
-        return {massage: "something went wrong"}
+        throw new Error(err);
     }
 };
 
@@ -43,14 +43,16 @@ const loginUser = async (email, password) => {
 
 console.log(validPassword)
         if (!validPassword) {
-            return { message: 'Invalid email or password' };
+            // return { message: 'Invalid email or password' };
+            throw new Error("wrong password");
         }
 
         const token = createToken(user._id, user.email)
        return {id:user._id, token}
     } catch (err) {
         console.log(err)
-        return { message: 'something went wrong' };
+        // return { message: 'something went wrong' };
+        throw new Error(err);
     }
 };
 

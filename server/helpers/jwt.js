@@ -6,7 +6,7 @@ const createToken = (id, email) => {
             id, email
         },
         secret,
-        { expiresIn: '5m' }
+        { expiresIn: '15m' }
     );
     return token
     // console.log (token)
