@@ -1,5 +1,5 @@
 const { getAllUsers, deleteUserById, getUserById, } = require('../controllers/user-controller')
-const { getAllTasks, createTask, updateTask, deleteTask } = require('../controllers/todo-controller');
+const { getAllTasks, getTaskById, createTask, updateTask, deleteTask } = require('../controllers/todo-controller');
 const { loginUser, registerUser } = require('../controllers/auth-controller');
 
 const resolvers = {
@@ -8,8 +8,8 @@ const resolvers = {
     user: async (_, { id }) => await getUserById(id),
 
 
-    todos: async () => await getAllTodos(),
-    todo: async (_, { id }) => await getTodoById(id),
+    todos: async (_,{assignee}) => await getAllTasks(assignee),
+    todo: async (_, { id }) => await getTaskById(id),
   },
 
 
@@ -22,7 +22,8 @@ const resolvers = {
     loginUser: async (_, { email, password }) => await loginUser( email, password ),
 
     createTodo: async (_, { description, assignee, dueDate, priority }) => await createTask(description, assignee, dueDate, priority),
-    deleteTodo: async (_, { id }) => await deleteTodoById(id),
+    updateTodo: async (_, {id, description, assignee, dueDate, priority}) => await updateTask(id, description, assignee, dueDate, priority),
+    deleteTodo: async (_, { id }) => await deleteTask(id),
   }
 };
 

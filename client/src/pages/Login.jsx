@@ -1,18 +1,29 @@
 import React, { useState } from 'react';
-
+import { useMutation } from '@apollo/client';
+import {LOGIN} from '../utils/mutation';
+import Auth from '../utils/auth';
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+const [loginUser, {err, data}]= useMutation(LOGIN);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!email || !password) {
       setError('Both fields are required');
       return;
     }
-
+try {
+  const {data}= await loginUser({
+    variables: {email, password}
+  })
+console.log(data.loginUser.token)
+Auth.login(data.loginUser.token)
+} catch (e) {
+  console.error(e);
+}
     setError('');
     console.log('Logging in with:', { email, password });
   };

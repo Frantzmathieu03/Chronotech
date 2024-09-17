@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom/client'
-import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, gql, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 // Bringing in the required imports from 'react-router-dom' to set up application routing behavior
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
@@ -9,10 +10,32 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import TodoList from './pages/todoList';
 
-const client = new ApolloClient({
+
+
+
+
+const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql',
-  cache: new InMemoryCache(),
 });
+
+const token = localStorage.getItem('token');
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `${token}` : "",
+    }
+  }
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache()
+});
+
 
 // client
 //   .query({
@@ -34,11 +57,11 @@ const client = new ApolloClient({
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: <App token={token}/>,
     children: [
       {
         index: true,
-        element: <Dashboard />,
+        element: <Dashboard token={token}/>,
       },
       {
         path: '/Login',
@@ -50,7 +73,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/TodoList',
-        element: <TodoList />,
+        element: <TodoList token={token}/>,
       },
     ],
   },
