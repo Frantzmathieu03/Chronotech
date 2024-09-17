@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, gql } from '@apollo/client';
+import {REGISTER_USER} from '../utils/mutation';
 
-const REGISTER_USER = gql`
-mutation RegisterUser($firstName: String!, $lastName: String!, $email: String!, $password: String!) {
-    registerUser(firstName: $firstName, lastName: $lastName, email: $email, password: $password) {
-      id
-      token
-    }
-  }
-`;
 
 const SignUp = () => {
     const [firstName, setFirstName] = useState('');
@@ -23,7 +16,9 @@ const SignUp = () => {
         e.preventDefault();
         try {
             const response = await registerUser({ variables: { firstName, lastName, email, password } });
-            console.log(response);
+            let auth_data = (response.data.registerUser);
+            localStorage.setItem("token", auth_data.token);
+            navigate("/");
         } catch (error) {
             console.error('Registration failed:', error);
         }
