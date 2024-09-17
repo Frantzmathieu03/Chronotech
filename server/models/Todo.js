@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { Schema, model } = require('mongoose');
 
 const todoSchema = new Schema({
     description: {
@@ -19,14 +18,14 @@ const todoSchema = new Schema({
         enum: ['low', 'medium', 'high'],
         default: 'medium',
     },
-    projectId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Project',
-        required: true,
-    },
+    // projectId: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Project',
+    //     required: true,
+    // },
 }, {
     timestamps: true,
 });
 
-const Todo = mongoose.model('Todo', todoSchema);
+const Todo = model('Todo', todoSchema);
 module.exports = Todo;

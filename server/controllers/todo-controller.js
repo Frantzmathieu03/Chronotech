@@ -11,12 +11,12 @@ const getAllTasks = async (req, res) => {
 };
 
 // Create a new task
-const createTask = async (req, res) => {
+const createTask = async (description, assignee, dueDate, priority) => {
     try {
-        const newTask = await Todo.create(req.body);
-        res.json(newTask);
+        const newTask = await Todo.create({description, assignee, dueDate, priority});
+        return newTask
     } catch (err) {
-        res.status(500).json(err);
+        return (err);
     }
 };
 

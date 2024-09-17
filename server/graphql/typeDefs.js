@@ -22,7 +22,6 @@ type Auth {
     assignee: String!
     dueDate: String!
     priority: String!
-    projectId: ID!
     createdAt: String!
     updatedAt: String!
   }
@@ -44,7 +43,7 @@ type Auth {
 
     
     #todos
-    createTodo(description: String!, assignee: String!, dueDate: String!, priority: String!, projectId: ID!): Todo
+    createTodo(description: String!, assignee: String!, dueDate: String!, priority: String!): Todo
     deleteTodo(id: ID!): String
   }
 `;
