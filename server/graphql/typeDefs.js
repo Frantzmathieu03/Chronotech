@@ -31,7 +31,7 @@ type Auth {
     users: [User]
     user(id: ID!): User
 
-    todos: [Todo]
+    todos(assignee:String!): [Todo]
     todo(id: ID!): Todo
   }
 
@@ -44,6 +44,7 @@ type Auth {
     
     #todos
     createTodo(description: String!, assignee: String!, dueDate: String!, priority: String!): Todo
+    updateTodo(id: ID!, description: String!, assignee: String!, dueDate: String!, priority: String!): Todo
     deleteTodo(id: ID!): String
   }
 `;

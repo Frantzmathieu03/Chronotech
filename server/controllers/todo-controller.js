@@ -1,14 +1,24 @@
 const { Todo } = require('../models');
 
 // Get all tasks for a project
-const getAllTasks = async (req, res) => {
+const getAllTasks = async (assignee) => {
     try {
-        const tasks = await Todo.find({ projectId: req.params.projectId });
-        res.json(tasks);
+        const tasks = await Todo.find({ assignee });
+        return tasks
     } catch (err) {
-        res.status(500).json(err);
+        return err
     }
 };
+
+const getTaskById = async (id) => {
+    try {
+        const task = await Todo.findById(id);
+        return task
+    } catch (err) {
+        return err
+    }
+};
+
 
 // Create a new task
 const createTask = async (description, assignee, dueDate, priority) => {
@@ -21,23 +31,23 @@ const createTask = async (description, assignee, dueDate, priority) => {
 };
 
 // Update a task
-const updateTask = async (req, res) => {
+const updateTask = async (id, description, assignee, dueDate, priority) => {
     try {
-        const updatedTask = await Todo.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        res.json(updatedTask);
+        const updatedTask = await Todo.findByIdAndUpdate(id, {description, assignee, dueDate, priority}, { new: true });
+        return updatedTask
     } catch (err) {
-        res.status(500).json(err);
+        return err
     }
 };
 
 // Delete a task
-const deleteTask = async (req, res) => {
+const deleteTask = async (id) => {
     try {
-        const deletedTask = await Todo.findByIdAndDelete(req.params.id);
-        res.json(deletedTask);
+        const deletedTask = await Todo.findByIdAndDelete(id);
+        return deletedTask
     } catch (err) {
-        res.status(500).json(err);
+        return err
     }
 };
 
-module.exports = { getAllTasks, createTask, updateTask, deleteTask };
+module.exports = { getAllTasks,getTaskById, createTask, updateTask, deleteTask };
