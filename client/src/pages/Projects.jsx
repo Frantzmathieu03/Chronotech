@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from "@apollo/client";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
-import { GET_ALL_PROJECTS } from "../utils/queries"; // Add the createProject mutation
+import { useNavigate } from "react-router-dom"; 
+import { GET_ALL_PROJECTS } from "../utils/queries"; 
 import { CREATE_PROJECT } from "../utils/mutation";
 import auth from "../utils/auth";
 
@@ -15,12 +15,13 @@ const styles = {
         alignItems: "center",
         width: "100%",
         height: "90vh",
+        fontFamily: "'Poppins', sans-serif", 
     },
     projectCard: {
         padding: 8,
         margin: 4,
         backgroundColor: "white",
-        cursor: "pointer", // Make the project card clickable
+        cursor: "pointer",
     },
     modal: {
         position: "fixed",
@@ -31,6 +32,10 @@ const styles = {
         padding: "20px",
         boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
         zIndex: 1000,
+        borderRadius: "8px",
+        width: "400px",
+        textAlign: "center", 
+        fontFamily: "'Poppins', sans-serif", 
     },
     overlay: {
         position: "fixed",
@@ -40,6 +45,37 @@ const styles = {
         bottom: 0,
         backgroundColor: "rgba(0, 0, 0, 0.7)",
         zIndex: 999,
+    },
+    input: {
+        width: "100%", 
+        padding: "10px",
+        margin: "10px 0",
+        borderRadius: "4px",
+        border: "1px solid #ccc",
+        boxSizing: "border-box", 
+        fontFamily: "'Poppins', sans-serif", 
+    },
+    label: {
+        display: "block",
+        marginBottom: "5px",
+        fontWeight: "bold",
+        color: "orange", 
+        textAlign: "left",
+        fontFamily: "'Poppins', sans-serif", 
+    },
+    button: {
+        backgroundColor: "orange", 
+        color: "white", 
+        padding: "10px 20px",
+        borderRadius: "5px",
+        border: "none",
+        cursor: "pointer",
+        marginTop: "20px",
+        transition: "background-color 0.3s ease", 
+        fontFamily: "'Poppins', sans-serif", 
+    },
+    buttonHover: {
+        backgroundColor: "#e67600", 
     }
 };
 
@@ -50,7 +86,7 @@ const Projects = () => {
     const [projectDescription, setProjectDescription] = useState("");
     const { data, loading, refetch } = useQuery(GET_ALL_PROJECTS, { variables: { userId: user?.id }, skip: !user?.id });
     const [createProject] = useMutation(CREATE_PROJECT);
-    const navigate = useNavigate(); // Initialize navigate function for routing
+    const navigate = useNavigate();
 
     useEffect(() => {
         const user = auth.getUser();
@@ -66,16 +102,15 @@ const Projects = () => {
                     userId: user.id,
                 },
             });
-            refetch(); // Refresh project list after creation
-            setIsModalOpen(false); // Close the modal after submitting
+            refetch(); 
+            setIsModalOpen(false); 
         } catch (error) {
             console.error("Error creating project", error);
         }
     };
 
-    // Navigate to the project details page
     const handleProjectClick = (projectId) => {
-        navigate(`/Task`); // Redirect to task assignment page
+        navigate(`/Task`);
     };
 
     return (
@@ -84,13 +119,20 @@ const Projects = () => {
                 <div
                     key={index}
                     style={styles.projectCard}
-                    onClick={() => handleProjectClick(project.id)} // Handle click to redirect
+                    onClick={() => handleProjectClick(project.id)} 
                 >
                     {project?.name}
                 </div>
             ))}
 
-            <button onClick={() => setIsModalOpen(true)}>Add new Project</button>
+            <button
+                style={styles.button}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
+                onClick={() => setIsModalOpen(true)}
+            >
+                Add New Project
+            </button>
 
             {isModalOpen && (
                 <>
@@ -102,8 +144,9 @@ const Projects = () => {
                             handleAddProject();
                         }}>
                             <div>
-                                <label>Project Name</label>
+                                <label style={styles.label}>Project Name</label>
                                 <input
+                                    style={styles.input}
                                     type="text"
                                     value={projectName}
                                     onChange={(e) => setProjectName(e.target.value)}
@@ -111,14 +154,17 @@ const Projects = () => {
                                 />
                             </div>
                             <div>
-                                <label>Project Description</label>
+                                <label style={styles.label}>Project Description</label>
                                 <textarea
+                                    style={styles.input}
                                     value={projectDescription}
                                     onChange={(e) => setProjectDescription(e.target.value)}
                                     required
                                 />
                             </div>
-                            <button type="submit">Create Project</button>
+                            <button type="submit" style={styles.button}>
+                                Create Project
+                            </button>
                         </form>
                     </div>
                 </>
@@ -128,4 +174,3 @@ const Projects = () => {
 };
 
 export default Projects;
-
