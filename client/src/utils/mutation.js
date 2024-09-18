@@ -37,3 +37,40 @@ mutation UpdateProject($name: String!, $description: String!, $userId: String!) 
   }
 }
 `
+
+export const  CREATE_TODO = gql`
+mutation CreateTodo($title: String!, $description: String!, $assignee: String!, $dueDate: String!, $priority: String!, $userId: String, $complete: Boolean, $projectId: String) {
+  createTodo(title: $title, description: $description, assignee: $assignee, dueDate: $dueDate, priority: $priority, userId: $userId, complete: $complete, projectId: $projectId) {
+    assignee
+    complete
+    createdAt
+    description
+    dueDate
+    id
+    priority
+    projectId
+    userId
+    updatedAt
+    title
+  }
+}
+`
+
+export const  UPDATE_TODO = gql`
+mutation UpdateTodo($updateTodoId: ID!, $description: String!, $assignee: String!, $dueDate: String!, $priority: String!) {
+  updateTodo(id: $updateTodoId, description: $description, assignee: $assignee, dueDate: $dueDate, priority: $priority) {
+    assignee
+    createdAt
+    description
+    id
+    dueDate
+    priority
+  }
+}
+`
+
+export const  DELETE_TODO = gql`
+mutation DeleteTodo($deleteTodoId: ID!) {
+  deleteTodo(id: $deleteTodoId)
+}
+`
