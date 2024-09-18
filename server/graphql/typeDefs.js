@@ -27,6 +27,7 @@ type Project {
 
   type Todo {
     id: ID!
+    title: String!
     description: String!
     assignee: String!
     projectId: String!
@@ -34,6 +35,8 @@ type Project {
     priority: String!
     createdAt: String!
     updatedAt: String!
+    userId: String!
+    complete: Boolean
   }
 
 
@@ -56,8 +59,8 @@ type Project {
 
     
     #todos
-    createTodo(description: String!, assignee: String!, dueDate: String!, priority: String!): Todo
-    updateTodo(id: ID!, description: String!, assignee: String!, dueDate: String!, priority: String!): Todo
+    createTodo(title: String!, description: String!, assignee: String!, dueDate: String!, priority: String!, userId: String, projectId: String, complete: Boolean): Todo
+    updateTodo(id: ID!, tiile: String, description: String, assignee: String, dueDate: String, priority: String, complete: Boolean): Todo
     deleteTodo(id: ID!): String
 
     #project

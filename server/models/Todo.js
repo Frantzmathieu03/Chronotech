@@ -1,6 +1,12 @@
 const { Schema, model } = require('mongoose');
 
 const todoSchema = new Schema({
+
+    title: {
+        type: String,
+        required: true,
+    },
+
     description: {
         type: String,
         required: true,
@@ -22,6 +28,19 @@ const todoSchema = new Schema({
         type: String,
         required: true,
     },
+
+
+    complete: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
+
+    userId: {
+        type: String,
+        required: true,
+    },
+
 }, {
     timestamps: true,
 });

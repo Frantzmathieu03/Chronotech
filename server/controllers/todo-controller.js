@@ -21,9 +21,10 @@ const getTaskById = async (id) => {
 
 
 // Create a new task
-const createTask = async (description, assignee, dueDate, priority, projectId) => {
+const createTask = async (title, description, assignee, dueDate, priority, projectId, userId, complete) => {
     try {
-        const newTask = await Todo.create({description, assignee, dueDate, priority, projectId});
+        const newTask = new Todo({title, description, assignee, dueDate, priority, projectId, userId, complete});
+        await newTask.save()
         return newTask
     } catch (err) {
         return (err);
@@ -31,9 +32,9 @@ const createTask = async (description, assignee, dueDate, priority, projectId) =
 };
 
 // Update a task
-const updateTask = async (id, description, assignee, dueDate, priority) => {
+const updateTask = async (id, title, description, assignee, dueDate, priority, complete) => {
     try {
-        const updatedTask = await Todo.findByIdAndUpdate(id, {description, assignee, dueDate, priority}, { new: true });
+        const updatedTask = await Todo.findByIdAndUpdate(id, {title, description, assignee, dueDate, priority, complete}, { new: true });
         return updatedTask
     } catch (err) {
         return err

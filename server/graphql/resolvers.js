@@ -25,9 +25,9 @@ const resolvers = {
     deleteUser: async (_, { id }) => await deleteUserById(id),
     loginUser: async (_, { email, password }) => await loginUser( email, password ),
 
-    createTodo: async (_, { description, assignee, dueDate, priority, projectId}) => await createTask(description, assignee, dueDate, priority, projectId),
-    updateTodo: async (_, {id, description, assignee, dueDate, priority}) => await updateTask(id, description, assignee, dueDate, priority),
-    deleteTodo: async (_, { id }) => await deleteTask(id),
+    createTodo: async (_, { title, complete, description, assignee, dueDate, priority, projectId, userId}) => await createTask(title, description, assignee, dueDate, priority, projectId, userId, complete),
+    updateTodo: async (_, {id, title, description, assignee, dueDate, priority, complete}) => await updateTask(id, title, description, assignee, dueDate, priority, complete),
+    deleteTodo: async (_, { deleteTodo }) => await deleteTask(id),
 
 
     createProject: async (_, { name, description, userId }) => await createProject(name, description, userId),
