@@ -21,9 +21,9 @@ const getTaskById = async (id) => {
 
 
 // Create a new task
-const createTask = async (description, assignee, dueDate, priority) => {
+const createTask = async (description, assignee, dueDate, priority, projectId) => {
     try {
-        const newTask = await Todo.create({description, assignee, dueDate, priority});
+        const newTask = await Todo.create({description, assignee, dueDate, priority, projectId});
         return newTask
     } catch (err) {
         return (err);
