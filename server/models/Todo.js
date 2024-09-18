@@ -18,11 +18,10 @@ const todoSchema = new Schema({
         enum: ['low', 'medium', 'high'],
         default: 'medium',
     },
-    // projectId: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Project',
-    //     required: true,
-    // },
+    projectId: {
+        type: String,
+        required: true,
+    },
 }, {
     timestamps: true,
 });

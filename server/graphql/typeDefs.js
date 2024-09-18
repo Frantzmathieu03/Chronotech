@@ -16,10 +16,20 @@ type Auth {
   token: String!
 }
 
+type Project {
+  id: ID!
+  name: String!
+  description: String!
+  userId: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
   type Todo {
     id: ID!
     description: String!
     assignee: String!
+    projectId: String!
     dueDate: String!
     priority: String!
     createdAt: String!
@@ -33,6 +43,9 @@ type Auth {
 
     todos(assignee:String!): [Todo]
     todo(id: ID!): Todo
+
+    projects(userId: ID!): [Project]
+    project(id: ID): Project
   }
 
 
@@ -46,6 +59,12 @@ type Auth {
     createTodo(description: String!, assignee: String!, dueDate: String!, priority: String!): Todo
     updateTodo(id: ID!, description: String!, assignee: String!, dueDate: String!, priority: String!): Todo
     deleteTodo(id: ID!): String
+
+    #project
+    createProject(name: String!, description: String!, userId: String!): Project
+    updateProject(id: ID!, name: String, description: String): Project
+    deleteProject(id: ID!): String
+
   }
 `;
 
