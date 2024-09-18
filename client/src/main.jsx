@@ -9,6 +9,8 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import TodoList from './pages/todoList';
+import Projects from './pages/Projects';
+
 
 
 
@@ -61,8 +63,14 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        element: <Projects token={token}/>,
+      },
+
+      {
+        path: '/Task',
         element: <Dashboard token={token}/>,
       },
+
       {
         path: '/Login',
         element: <Login />,
