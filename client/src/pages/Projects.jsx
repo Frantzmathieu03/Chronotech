@@ -1,2 +1,0 @@
-// dynamically displays links to created projects
-// (e.g. navigate to Projects > [shows list of created projects and a create project button] Project 1 > [shows task list/create a task page for that project])
