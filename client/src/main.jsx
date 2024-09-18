@@ -11,9 +11,6 @@ import SignUp from './pages/SignUp';
 import TodoList from './pages/todoList';
 
 
-
-
-
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql',
 });
