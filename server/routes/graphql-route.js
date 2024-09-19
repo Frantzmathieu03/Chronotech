@@ -2,7 +2,8 @@ const { ApolloServer } = require('apollo-server-express');
 const typeDefs = require('../graphql/typeDefs');
 const resolvers = require('../graphql/resolvers');
 const {authenticate} = require('../middleware/auth.middleware')
-
+const express= require("express")
+const path= require("path")
 
 const apolloServer = new ApolloServer({
   typeDefs,
