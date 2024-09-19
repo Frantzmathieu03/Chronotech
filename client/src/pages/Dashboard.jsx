@@ -1,35 +1,52 @@
 import React, { useState, useEffect } from "react";
+import { useMutation, useQuery } from '@apollo/client';
+import { CREATE_TODO, DELETE_TODO } from "../utils/mutation";
+import { useLocation } from 'react-router-dom';
+import auth from "../utils/auth";
+import { GET_ALL_TODO } from "../utils/queries";
+
 
 const Dashboard = () => {
-  const [tasks, setTasks] = useState([]);
+  // const [user, setUser] = useState();
+  
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [assignee, setAssignee] = useState("");
   const [taskDate, setTaskDate] = useState("");
 
-  useEffect(() => {
-    const storedTasks = JSON.parse(localStorage.getItem("tasks"));
-    if (storedTasks) {
-      setTasks(storedTasks);
-    }
-  }, []);
+  const [createTodo, {err}]= useMutation(CREATE_TODO);
+  const [deleteTodo, {e}]= useMutation(DELETE_TODO);
+  const location = useLocation();
 
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
+  // Create a URLSearchParams object using the search property of the location
+  const queryParams = new URLSearchParams(location.search);
+const projectId = queryParams.get('project');
+const user = auth.getUser();
+console.log(user)
+const { data, loading, refetch } = useQuery(GET_ALL_TODO, { variables: { assignee: user?.firstName }, skip: !user?.id });
+console.log(data)
+//   useEffect(() => {
+//     const user = auth.getUser();
+//     setUser(user);
+// }, []);
 
-  const handleAddTask = () => {
+  
+
+  const handleAddTask = async() => {
     const newTask = {
-      id: Date.now(),
       title: taskTitle,
       description: taskDescription,
       assignee,
-      date: taskDate,
-      completed: false,
+      priority: "high",
+      dueDate: taskDate,
+      complete: false,
+      userId: user?.id,
+      projectId
     };
-    setTasks((prevTasks) =>
-      [...prevTasks, newTask].sort((a, b) => new Date(a.date) - new Date(b.date))
-    );
+    
+    console.log(newTask)
+    await createTodo({variables: newTask})
+
     setTaskTitle("");
     setTaskDescription("");
     setAssignee("");
@@ -37,15 +54,16 @@ const Dashboard = () => {
   };
 
   const handleToggleComplete = (id) => {
-    const updatedTasks = tasks.map((task) =>
+    const updatedTasks = data?.projects.map((task) =>
       task.id === id ? { ...task, completed: !task.completed } : task
     );
     setTasks(updatedTasks.sort((a, b) => a.completed - b.completed));
   };
 
   const handleDeleteTask = (id) => {
-    const updatedTasks = tasks.filter((task) => task.id !== id);
-    setTasks(updatedTasks);
+  
+    deleteTodo({variables:{deleteTodo:id}});
+    refetch()
   };
 
   const styles = {
@@ -197,11 +215,11 @@ const Dashboard = () => {
 
       <div style={styles.taskList}>
         <h2 style={styles.heading}>Task List</h2>
-        {tasks.length === 0 ? (
+        {loading? (
           <p style={styles.noTasks}>No tasks available</p>
         ) : (
           <ul style={styles.ul}>
-            {tasks.map((task) => (
+            {data?.projects.map((task) => (
               <li key={task.id} style={styles.taskItem}>
                 <input
                   type="checkbox"
@@ -223,7 +241,7 @@ const Dashboard = () => {
                   <p style={styles.taskText}>Due: {new Date(task.date).toDateString()}</p>
                 </div>
                 <button
-                  onClick={() => handleDeleteTask(task.id)}
+                  onClick={() => handleDeleteTask(task._id)}
                   style={styles.deleteButton}
                 >
                   Delete

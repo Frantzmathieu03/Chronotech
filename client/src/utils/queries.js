@@ -13,3 +13,23 @@ query Projects($userId: ID!) {
     }
   }
 `
+
+
+export const GET_ALL_TODO = gql`
+query Todos($assignee: String!) {
+  todos(assignee: $assignee) {
+    assignee
+    complete
+    createdAt
+    description
+    dueDate
+    id
+    priority
+    projectId
+    title
+    updatedAt
+    userId
+  }
+}
+`
+

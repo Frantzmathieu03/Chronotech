@@ -2,7 +2,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { GET_ALL_PROJECTS } from "../utils/queries"; 
-import { CREATE_PROJECT } from "../utils/mutation";
+import { CREATE_PROJECT, UPDATE_PROJECT } from "../utils/mutation";
 import auth from "../utils/auth";
 
 const styles = {
@@ -110,7 +110,7 @@ const Projects = () => {
     };
 
     const handleProjectClick = (projectId) => {
-        navigate(`/Task`);
+        navigate(`/Task?project=${projectId}`);
     };
 
     return (
