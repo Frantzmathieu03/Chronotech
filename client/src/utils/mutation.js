@@ -70,7 +70,7 @@ mutation UpdateTodo($updateTodoId: ID!, $description: String!, $assignee: String
 `
 
 export const  DELETE_TODO = gql`
-mutation DeleteTodo($deleteTodoId: ID!) {
-  deleteTodo(id: $deleteTodoId)
+mutation DeleteTodo($deleteTodo: ID!) {
+  deleteTodo(deleteTodo: $deleteTodo)
 }
 `

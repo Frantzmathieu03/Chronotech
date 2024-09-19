@@ -61,7 +61,7 @@ type Project {
     #todos
     createTodo(title: String!, description: String!, assignee: String!, dueDate: String!, priority: String!, userId: String, projectId: String, complete: Boolean): Todo
     updateTodo(id: ID!, tiile: String, description: String, assignee: String, dueDate: String, priority: String, complete: Boolean): Todo
-    deleteTodo(id: ID!): String
+    deleteTodo(deleteTodo: ID!): String
 
     #project
     createProject(name: String!, description: String!, userId: String!): Project

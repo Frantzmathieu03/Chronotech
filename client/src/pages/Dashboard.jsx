@@ -3,11 +3,11 @@ import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_TODO, DELETE_TODO } from "../utils/mutation";
 import { useLocation } from 'react-router-dom';
 import auth from "../utils/auth";
-import { GET_ALL_PROJECTS } from "../utils/queries";
+import { GET_ALL_TODO } from "../utils/queries";
 
 
 const Dashboard = () => {
-  const [user, setUser] = useState();
+  // const [user, setUser] = useState();
   
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
@@ -21,12 +21,14 @@ const Dashboard = () => {
   // Create a URLSearchParams object using the search property of the location
   const queryParams = new URLSearchParams(location.search);
 const projectId = queryParams.get('project');
-const { data, loading, refetch } = useQuery(GET_ALL_PROJECTS, { variables: { userId: user?.id }, skip: !user?.id });
-
-  useEffect(() => {
-    const user = auth.getUser();
-    setUser(user);
-}, []);
+const user = auth.getUser();
+console.log(user)
+const { data, loading, refetch } = useQuery(GET_ALL_TODO, { variables: { assignee: user?.firstName }, skip: !user?.id });
+console.log(data)
+//   useEffect(() => {
+//     const user = auth.getUser();
+//     setUser(user);
+// }, []);
 
   
 
@@ -59,8 +61,8 @@ const { data, loading, refetch } = useQuery(GET_ALL_PROJECTS, { variables: { use
   };
 
   const handleDeleteTask = (id) => {
-  debugger
-    deleteTodo({variables:{deleteTodoId:id}});
+  
+    deleteTodo({variables:{deleteTodo:id}});
     refetch()
   };
 
@@ -239,7 +241,7 @@ const { data, loading, refetch } = useQuery(GET_ALL_PROJECTS, { variables: { use
                   <p style={styles.taskText}>Due: {new Date(task.date).toDateString()}</p>
                 </div>
                 <button
-                  onClick={() => handleDeleteTask(task.id)}
+                  onClick={() => handleDeleteTask(task._id)}
                   style={styles.deleteButton}
                 >
                   Delete
